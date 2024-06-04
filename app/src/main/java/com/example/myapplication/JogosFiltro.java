@@ -12,6 +12,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.Random;
+
 public class JogosFiltro extends AppCompatActivity {
 
     @Override
@@ -44,6 +46,23 @@ public class JogosFiltro extends AppCompatActivity {
             public void onClick(View v) {
                 // Redirecionar para a tela de Jogos
                 Intent intent = new Intent(JogosFiltro.this, Jogos.class);
+                startActivity(intent);
+            }
+        });
+
+        Button personagensButton = findViewById(R.id.personagens_button);
+        personagensButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Redirecionar aleatoriamente para JogoPersonagem ou JogoPersonagem2
+                Class<?> targetActivity;
+                Random random = new Random();
+                if (random.nextBoolean()) {
+                    targetActivity = JogoPersonagem.class;
+                } else {
+                    targetActivity = JogoPersonagem2.class;
+                }
+                Intent intent = new Intent(JogosFiltro.this, targetActivity);
                 startActivity(intent);
             }
         });
