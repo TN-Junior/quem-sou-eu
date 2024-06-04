@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#006AF3"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/title_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quem Sou Eu"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <Button
+        android:id="@+id/play_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jogar"
+        android:textColor="@android:color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/title_textview"
+        android:layout_marginTop="64dp"/>
+
+    <Button
+        android:id="@+id/instructions_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Instruções"
+        android:textColor="@android:color/white"
+        android:layout_below="@id/play_button"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/exit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sair"
+        android:textColor="@android:color/white"
+        android:layout_below="@id/instructions_button"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"/>
+
+
+    <TextView
+        android:id="@+id/scores_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🏆 Recordes"
+        android:textColor="@android:color/white"
+        android:layout_below="@id/play_button"
+        android:layout_toStartOf="@id/instructions_button"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="150dp"/>
+
+
+    <TextView
+        android:id="@+id/last_game_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Último Jogo:"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:layout_alignTop="@id/scores_button"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="150dp"/>
+
+</RelativeLayout>
