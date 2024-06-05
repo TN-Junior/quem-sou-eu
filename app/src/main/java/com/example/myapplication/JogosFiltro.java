@@ -1,11 +1,9 @@
 package com.example.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,14 +14,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.util.Random;
-
 public class JogosFiltro extends AppCompatActivity {
 
-    private SensorManager sensorManager;
-    private Sensor accelerometerSensor;
-    private float[] accelerometerValues = new float[3];
-    private Class<?> currentTargetActivity;
+    private static final String PREFERENCES_NAME = "JogosFiltroPreferences";
+    private static final String LAST_ACTIVITY_KEY = "lastActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +31,6 @@ public class JogosFiltro extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-        currentTargetActivity = JogoPersonagem.class;
 
         Button voltarButton = findViewById(R.id.voltar_button);
         voltarButton.setOnClickListener(new View.OnClickListener() {
@@ -68,49 +57,29 @@ public class JogosFiltro extends AppCompatActivity {
         personagensButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Redirecionar para a tela de Personagem atual
-                Intent intent = new Intent(JogosFiltro.this, currentTargetActivity);
+                // Redirecionar aleatoriamente para JogoPersonagem ou JogoPersonagem2
+                Class<?> targetActivity = getNextActivity();
+                Intent intent = new Intent(JogosFiltro.this, targetActivity);
                 startActivity(intent);
             }
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        sensorManager.registerListener(sensorEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
-    }
+    private Class<?> getNextActivity() {
+        SharedPreferences preferences = getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        boolean lastWasPersonagem1 = preferences.getBoolean(LAST_ACTIVITY_KEY, false);
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        sensorManager.unregisterListener(sensorEventListener);
-    }
-
-    private SensorEventListener sensorEventListener = new SensorEventListener() {
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-            accelerometerValues = event.values;
-
-            float x = accelerometerValues[0];
-            float y = accelerometerValues[1];
-            float z = accelerometerValues[2];
-
-            if (Math.abs(x) > Math.abs(y) && Math.abs(x) > Math.abs(z)) {
-                // Dispositivo está deitado (eixo x)
-                if (x > 0) {
-                    // Dispositivo está virado para cima
-                    currentTargetActivity = JogoPersonagem.class;
-                } else {
-                    // Dispositivo está virado para baixo
-                    currentTargetActivity = JogoPersonagem2.class;
-                }
-            }
+        Class<?> nextActivity;
+        if (lastWasPersonagem1) {
+            nextActivity = JogoPersonagem2.class;
+        } else {
+            nextActivity = JogoPersonagem.class;
         }
 
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-            // por enquanto não precisa mexer
-        }
-    };
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(LAST_ACTIVITY_KEY, !lastWasPersonagem1);
+        editor.apply();
+
+        return nextActivity;
+    }
 }

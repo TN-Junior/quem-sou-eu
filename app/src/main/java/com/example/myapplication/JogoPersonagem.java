@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +15,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class JogoPersonagem extends AppCompatActivity {
+
+    private static final String PREFERENCES_NAME = "JogosFiltroPreferences";
+    private static final String LAST_ACTIVITY_KEY = "lastActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,5 +42,33 @@ public class JogoPersonagem extends AppCompatActivity {
                 finish();
             }
         });
+
+        View rootView = findViewById(android.R.id.content);
+        rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleActivity();
+            }
+        });
+    }
+
+    private void toggleActivity() {
+        SharedPreferences preferences = getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        boolean lastWasPersonagem1 = preferences.getBoolean(LAST_ACTIVITY_KEY, true);  // Considerando que esta é JogoPersonagem, defina true por padrão
+
+        Class<?> nextActivity;
+        if (lastWasPersonagem1) {
+            nextActivity = JogoPersonagem2.class;
+        } else {
+            nextActivity = JogoPersonagem.class;
+        }
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(LAST_ACTIVITY_KEY, !lastWasPersonagem1);
+        editor.apply();
+
+        Intent intent = new Intent(JogoPersonagem.this, nextActivity);
+        startActivity(intent);
+        finish();
     }
 }
