@@ -1,9 +1,11 @@
 package com.example.myapplication;
 
+import android.content.Context;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import androidx.test.core.app.ApplicationProvider;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.view.View;
