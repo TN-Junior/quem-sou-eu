@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Before;

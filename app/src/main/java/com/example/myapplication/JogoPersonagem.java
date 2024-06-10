@@ -52,7 +52,7 @@ public class JogoPersonagem extends AppCompatActivity {
         });
     }
 
-    private void toggleActivity() {
+    public void toggleActivity() {
         SharedPreferences preferences = getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
         boolean lastWasPersonagem1 = preferences.getBoolean(LAST_ACTIVITY_KEY, true);  // Considerando que esta é JogoPersonagem, defina true por padrão
 

@@ -1,6 +1,11 @@
 plugins {
-    alias(libs.plugins.android.application)
+    id("com.android.application") version "8.4.1" apply false
+    id("org.jetbrains.kotlin.android") version "1.8.0" apply false
+    kotlin("kapt") version "1.8.0"
 }
+
+apply(plugin = "com.android.application")
+apply(plugin = "org.jetbrains.kotlin.android")
 
 android {
     namespace = "com.example.myapplication"
@@ -34,11 +39,12 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.core)
+    implementation(libs.junit)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    // Adicionando dependências específicas para testes com AndroidJUnit4
+    // Adding AndroidX Test dependencies
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.test:core:1.5.0")
