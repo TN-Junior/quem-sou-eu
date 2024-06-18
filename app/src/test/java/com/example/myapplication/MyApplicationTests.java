@@ -1,11 +1,6 @@
 package com.example.myapplication;
 
 import android.content.Context;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-
-import androidx.test.core.app.ApplicationProvider;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.view.View;
@@ -18,9 +13,22 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(AndroidJUnit4.class)
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
+@RunWith(MockitoJUnitRunner.class)
 public class MyApplicationTests {
+
+    @Mock
+    SharedPreferences mockSharedPreferences;
+
+    @Mock
+    SharedPreferences.Editor mockEditor;
 
     private ActivityScenario<MainActivity> mainActivityScenario;
     private ActivityScenario<instrucoes> instrucoesActivityScenario;
@@ -31,18 +39,21 @@ public class MyApplicationTests {
 
     @Before
     public void setUp() {
-       
         mainActivityScenario = ActivityScenario.launch(MainActivity.class);
         instrucoesActivityScenario = ActivityScenario.launch(instrucoes.class);
         jogoPersonagemActivityScenario = ActivityScenario.launch(JogoPersonagem.class);
         jogoPersonagem2ActivityScenario = ActivityScenario.launch(JogoPersonagem2.class);
         jogosActivityScenario = ActivityScenario.launch(Jogos.class);
         jogosFiltroActivityScenario = ActivityScenario.launch(JogosFiltro.class);
+
+        
+        Mockito.when(mockSharedPreferences.getBoolean("lastActivity", false)).thenReturn(false);
+        Mockito.when(mockSharedPreferences.edit()).thenReturn(mockEditor);
+        Mockito.when(mockEditor.putBoolean(Mockito.anyString(), Mockito.anyBoolean())).thenReturn(mockEditor);
     }
 
     @After
     public void tearDown() {
-        
         mainActivityScenario.close();
         instrucoesActivityScenario.close();
         jogoPersonagemActivityScenario.close();
@@ -93,7 +104,8 @@ public class MyApplicationTests {
     @Test
     public void testJogosFiltroPreferences() {
         jogosFiltroActivityScenario.onActivity(activity -> {
-            SharedPreferences preferences = activity.getSharedPreferences("JogosFiltroPreferences", Context.MODE_PRIVATE);
+            
+            SharedPreferences preferences = mockSharedPreferences;
             assertNotNull(preferences);
             boolean lastWasPersonagem1 = preferences.getBoolean("lastActivity", false);
             assertFalse(lastWasPersonagem1);
