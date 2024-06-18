@@ -31,7 +31,7 @@ public class MyApplicationTests {
 
     @Before
     public void setUp() {
-        // Initialize the scenarios
+       
         mainActivityScenario = ActivityScenario.launch(MainActivity.class);
         instrucoesActivityScenario = ActivityScenario.launch(instrucoes.class);
         jogoPersonagemActivityScenario = ActivityScenario.launch(JogoPersonagem.class);
@@ -42,7 +42,7 @@ public class MyApplicationTests {
 
     @After
     public void tearDown() {
-        // Close the scenarios
+        
         mainActivityScenario.close();
         instrucoesActivityScenario.close();
         jogoPersonagemActivityScenario.close();
